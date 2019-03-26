@@ -6,7 +6,7 @@ class Board(object):
 
     def __init__(self):
         # Cria tabuleiro completo com peças
-        [self.board_arr.append([Part(x, y, True) for y in range(7)]) for x in range(7)]
+        [self.board_arr.append([Part(True) for _ in range(7)]) for _ in range(7)]
         # Ajusta tabuleiro
         # Superior
         self.board_arr[0][:1] = [None, None]
@@ -27,12 +27,17 @@ class Board(object):
         if abs(start[0] - end[0]) <= 2 and abs(start[1] - end[1]) <= 2:
             # Verifica se há peça e se não foi removida
             part_start = self.board_arr[start[0]][start[1]]
-            if part_start is not None and part_start.inside != False:
+            if part_start is not None and part_start.inside is not False:
                 # Verifica se o destino é válido
                 part_ent = self.board_arr[end[0]][end[1]]
-                if part_ent is not None and part_ent.inside == False:
+                if part_ent is not None and part_ent.inside is False:
+                    # Move peça
                     part_start.inside = False
                     part_ent.inside = True
+                    # Remove Peça
+                    jumped_xCoord = int((start[0] + end[0]) / 2)
+                    jumped_yCoord = int((start[1] + end[1]) / 2)
+                    self.board_arr[jumped_xCoord][jumped_yCoord].inside = False
         else:
             raise InvalidMove
 
@@ -49,14 +54,9 @@ class Board(object):
 
 
 class Part(object):
-    xcoord = 0
-    ycoord = 0
     inside = False
 
-
-    def __init__(self, x, y, inside):
-        self.xcoord = x
-        self.ycoord = y
+    def __init__(self, inside):
         self.inside = inside
 
     def rem(self):
