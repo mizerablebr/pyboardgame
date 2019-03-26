@@ -1,2 +1,6 @@
+from parts import *
+
 if __name__ == "__main__":
-    print('Hello game!')
+    board = Board()
+
+    print(board)
