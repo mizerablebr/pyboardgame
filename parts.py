@@ -3,6 +3,7 @@ from helper import *
 
 class Board(object):
     board_arr = []
+    quantity = 0
 
     def __init__(self):
         # Cria tabuleiro completo com peças
@@ -22,6 +23,8 @@ class Board(object):
         # Remove peça do meio
         self.board_arr[3][3].rem()
 
+        self.quantity = self.quantify()
+
     def play(self, start, end):
         # Verifica Distância máxima do movimento
         if abs(start[0] - end[0]) <= 2 and abs(start[1] - end[1]) <= 2:
@@ -38,17 +41,30 @@ class Board(object):
                     jumped_xCoord = int((start[0] + end[0]) / 2)
                     jumped_yCoord = int((start[1] + end[1]) / 2)
                     self.board_arr[jumped_xCoord][jumped_yCoord].inside = False
+                    ## Atualiza contagem
+                    self.quantity -=1
+                else:
+                    raise InvalidMove
+            else:
+                raise InvalidMove
         else:
             raise InvalidMove
 
-    def __repr__(self):
-        return_str = ''
+    def quantify(self):
+        count = 0
         for x in self.board_arr:
+            count += sum([1 if part is not None and part.inside is True else 0 for part in x])
+        return count
+
+    def __repr__(self):
+        return_str = '   0 1 2 3 4 5 6\n \n'
+        for n, x in enumerate(self.board_arr):
+            return_str += '{}  '.format(n)
             for y in x:
                 if y is None:
-                    return_str += ' '
+                    return_str += '  '
                 else:
-                    return_str += '1' if y.inside == True else '0'
+                    return_str += '1 ' if y.inside == True else '0 '
             return_str += '\n'
         return return_str
 
