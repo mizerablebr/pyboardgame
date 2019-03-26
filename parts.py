@@ -41,8 +41,8 @@ class Board(object):
                     jumped_xCoord = int((start[0] + end[0]) / 2)
                     jumped_yCoord = int((start[1] + end[1]) / 2)
                     self.board_arr[jumped_xCoord][jumped_yCoord].inside = False
-                    ## Atualiza contagem
-                    self.quantity -=1
+                    # Atualiza contagem
+                    self.quantity -= 1
                 else:
                     raise InvalidMove
             else:
