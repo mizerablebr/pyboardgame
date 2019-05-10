@@ -73,7 +73,7 @@ class Board(Jogavel):
 
     def play(self, start, end):
         # Verifica Distância máxima do movimento
-        if abs(start[0] - end[0]) <= 2 and abs(start[1] - end[1]) <= 2:
+        if self.valida_jogada(start, end):
             # Verifica se há peça e se não foi removida
             part_start = self.board_arr[start[0]][start[1]]
             if part_start is not None and part_start.inside is not False:
@@ -95,6 +95,15 @@ class Board(Jogavel):
                 raise InvalidMove
         else:
             raise InvalidMove
+
+    def valida_jogada(self, start, end):
+        if abs(start[0] - end[0]) == 2 and abs(start[1] - end[1]) == 2:
+            return True
+        if abs(start[0] - end[0]) == 2 and abs(start[1] - end[1]) == 0:
+            return True
+        if abs(start[0] - end[0]) == 0 and abs(start[1] - end[1]) == 2:
+            return True
+        return False
 
 
     def quantify(self):
