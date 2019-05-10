@@ -1,11 +1,57 @@
+import copy
+
+from agentes import AgenteHumano
 from helper import *
+from regras_jogo import Jogavel
 
 
-class Board(object):
-    board_arr = []
-    quantity = 0
+class Board(Jogavel):
+    JOGADOR_PADRAO = AgenteHumano()
+
+    def registrarAgenteJogador(self, elemAgente=JOGADOR_PADRAO):
+        self.jogadores.append(elemAgente)
+        return self.jogadores.index(elemAgente)
+
+    def isFim(self):
+        if self.quantity <= 1:
+            print('VOCÊ VENCEU, PARABÉNS! RESTA {}'.format(self.quantity))
+            return True
+        if self.quantity == 9999:
+            return True
+
+    def gerarCampoVisao(self, idAgente):
+        # TODO: Ignorando id do agente
+        print(self)
+        return copy.deepcopy(self)
+
+    def registrarProximaAcao(self, id_jogador, acao):
+        self.jogadas[id_jogador] = acao
+
+    def atualizarEstado(self, diferencial_tempo):
+        # TODO: Hardcoded primeiro jogador
+        command = self.jogadas.get(0)
+        if command != 'sair':
+            if command.find(';') != -1:
+                coordinates = command.split(';')
+                coordStart = list(map(int, coordinates[0].split(',')))
+                coordEnd = list(map(int, coordinates[1].split(',')))
+                try:
+                    self.play(coordStart, coordEnd)
+                except InvalidMove:
+                    print('Movimento Inválido!')
+            else:
+                print('Comando inválido')
+
+            print('Restam {}'.format(self.quantity))
+        else:
+            self.quantity = 9999
+
 
     def __init__(self):
+        self.board_arr = []
+        self.quantity = 0
+        self.jogadores = []
+        self.jogadas = dict()
         # Cria tabuleiro completo com peças
         [self.board_arr.append([Part(True) for _ in range(7)]) for _ in range(7)]
         # Ajusta tabuleiro
@@ -49,6 +95,7 @@ class Board(object):
                 raise InvalidMove
         else:
             raise InvalidMove
+
 
     def quantify(self):
         count = 0

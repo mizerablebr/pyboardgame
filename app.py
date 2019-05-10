@@ -9,7 +9,7 @@ if __name__ == "__main__":
         print(board)
         if board.quantity > 1:
             print('Restam {}'.format(board.quantity))
-            print('Digite a origem e o destino ou \'sair\': x0,y0;x1,y0')
+            print('Digite a origem e o destino ou \'sair\': x0,y0;x1,y1')
             command = input()
             if command.find(';') != -1:
                 coordinates = command.split(';')
