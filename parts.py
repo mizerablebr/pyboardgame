@@ -97,8 +97,6 @@ class Board(Jogavel):
             raise InvalidMove
 
     def valida_jogada(self, start, end):
-        if abs(start[0] - end[0]) == 2 and abs(start[1] - end[1]) == 2:
-            return True
         if abs(start[0] - end[0]) == 2 and abs(start[1] - end[1]) == 0:
             return True
         if abs(start[0] - end[0]) == 0 and abs(start[1] - end[1]) == 2:
